@@ -24,7 +24,10 @@ export default function Login() {
 
     return (
         <>
-            <div className="border border-custom-gray w-1/4 rounded-md shadow-md m-auto bg-custom-black text-custom-light-gray p-8">
+            <div
+                className="border border-custom-gray w-1/4 rounded-md shadow-md m-auto bg-custom-black text-custom-light-gray p-8"
+            // className={uiConstants.div.centerFeed}
+            >
                 <form onSubmit={handleSubmit} className="flex flex-col gap-4">
 
                     <div className="flex flex-col gap-2 text-center">

@@ -1,17 +1,8 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faHeart, faComment, faShareSquare } from '@fortawesome/free-regular-svg-icons'
 import { IconDefinition } from "@fortawesome/free-solid-svg-icons";
-
-interface Post {
-    postID?: string,
-    postedBy?: string,
-    caption?: string,
-    uploadedDate: Date,
-    imageUrl?: string,
-    likeCount?: number,
-    commentCount?: number,
-    shareCount?: number
-}
+import { Content } from '../../service/ContentService';
+import { uiConstants } from './UIConstants';
 
 interface PostLink {
     name: string,
@@ -20,7 +11,7 @@ interface PostLink {
     info: number
 }
 
-export default function Post(post: Post) {
+export default function Post(post: Content) {
 
     const actionItems: PostLink[] = [
         { name: "Like", icon: faHeart, info: post?.likeCount || 0 },
@@ -30,38 +21,30 @@ export default function Post(post: Post) {
 
     return (
         <>
-            <div
-                id="post_container"
-                className="w-full border p-4 rounded-md"
-            >
-                <div id="image_container" className="">
-                    {
-                        post.imageUrl
-                    }
-                </div>
-
+            <div id="post_container" className={uiConstants.div.contentPost}>
+                <div id="image_container" className="">{post.imageUrl}</div>
                 <div id="header" className="flex flex-row justify-between items-center">
                     <div id="account_info" className="flex flex-row gap-2 items-center">
                         <img
-                            className="border border-black w-8 h-8 rounded-full"
+                            className="border border-black w-10 h-10 rounded-full"
                             src="https://upload.wikimedia.org/wikipedia/commons/9/99/Sample_User_Icon.png"
-                            alt="" />
-                        <span className="font-semibold flex items-center text-md text-gray-500"><a href={`/user/${post.postedBy}`}>@{post.postedBy}</a></span>
+                            alt=""
+                        />
+                        <div className='flex-col'>
+                            <span className="font-semibold flex items-center text-lg text-white"><a href={`/user/${post.postedBy}`}>@{post.postedBy}</a></span>
+                            <p className="font-semibold text-sm text-gray-500">{formatDate(post.createdOn)}</p>
+                        </div>
                     </div>
-
-                    <p className="font-semibold text-sm text-gray-500">{formatDate(post.uploadedDate)}</p>
                 </div>
-
                 <div className="my-2">
                     {post.caption}
                 </div>
-
-                <div className="py-2 border-t-2 border-gray-100 text-gray-500 font-semibold text-sm">
-                    <ul id="action_center" className='flex flex-row gap-4 items-center'>
+                <div className="py-2 border-t-2 border-gray-500 text-gray-500 font-semibold text-md">
+                    <ul id="action_center" className='flex flex-row gap-4 items-center bg-secondary-bg'>
                         {
                             actionItems.map((item, i) => {
                                 return (
-                                    <li key={i} className='m-0 flex flex-row items-center gap-2'>
+                                    <li key={i} className='text-lg m-0 flex flex-row items-center gap-2 bg-secondary-bg'>
                                         <span>{formatInfo(item.info)}</span>
                                         <FontAwesomeIcon className={`${item.color}`} icon={item.icon} />
                                     </li>
@@ -75,12 +58,12 @@ export default function Post(post: Post) {
     )
 }
 
-
-
 const formatDate = (date: Date): string => {
     const months = ["jan", "feb", "mar", "apr", "may", "jun", "jul", "aug", "sep", "oct", "nov", "dec"];
-    const month_index = date.getMonth();
-    return months[month_index] + " " + date.getDay() + ", " + date.getFullYear();
+    return "" + date || date.toLocaleDateString();
+    // return date?.toLocaleDateString()
+    // const month_index = date.getMonth();
+    // return months[month_index] + " " + date.getDay() + ", " + date.getFullYear();
 }
 
 const formatInfo = (info: number): string => {

@@ -22,7 +22,6 @@ export default function Register() {
         }
 
         const response = await AuthService.Register(data)
-        console.log(response)
 
         if (response instanceof AxiosError)
             alert(response.response?.data)

@@ -1,6 +1,6 @@
 import axios, { AxiosError } from "axios";
 
-const BACKEND_ENDPOINT: string = "http://localhost:8080/api/v1";
+export const BACKEND_ENDPOINT: string = "http://localhost:8080/api/v1";
 
 export default class BaseService {
   static DB = axios.create({

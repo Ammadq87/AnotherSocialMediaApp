@@ -2,9 +2,14 @@ import { getAttributeFromToken } from "../lib/utils";
 import BaseService from "./BaseService";
 
 export interface Content {
+  postID?: string;
+  postedBy?: string;
   caption: string;
-  createdOn?: Date;
-  postedBy: string;
+  createdOn: Date;
+  imageUrl?: string;
+  likeCount?: number;
+  commentCount?: number;
+  shareCount?: number;
 }
 
 const CONTENT_SERVICE_URL: string = "/content";

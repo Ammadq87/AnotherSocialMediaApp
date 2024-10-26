@@ -27,11 +27,11 @@ export default function Create() {
     ]
 
     const [caption, setCaption] = useState("");
+    const [actionCenter, setActionCenter] = useState(false)
 
     async function createContent() {
         try {
-            const response = await ContentService.createPost(caption)
-            console.log(response)
+            await ContentService.createPost(caption)
         } catch (e) {
             console.error(e)
         }
@@ -50,33 +50,41 @@ export default function Create() {
             <div className={uiConstants.div.contentDiv} >
                 <textarea
                     name="caption"
-                    rows={4}
+                    rows={1}
                     className={uiConstants.text.textArea}
                     onChange={(e) => { handleCaption(e.target.value) }}
+                    onFocus={() => { setActionCenter(true) }}
+                    onBlur={() => { setActionCenter(false) }}
                     placeholder="Say something to the world..."
                 >
                 </textarea>
-                <div id="action-center" className="flex justify-between my-2">
-                    <div id="actions" className="flex gap-4">
-                        {
-                            actionItems.map((item, i) => {
-                                return (
-                                    <div key={i} className="text-lg text-white">
-                                        <FontAwesomeIcon icon={item.icon} />
-                                    </div>
-                                )
-                            })
-                        }
+
+                {
+                    actionCenter &&
+
+                    <div id="action-center" className="flex justify-between">
+                        <div id="actions" className="flex gap-4">
+                            {
+                                actionItems.map((item, i) => {
+                                    return (
+                                        <div key={i} className="text-lg text-white">
+                                            <FontAwesomeIcon icon={item.icon} />
+                                        </div>
+                                    )
+                                })
+                            }
+                        </div>
+                        <div className="flex gap-2">
+                            <button
+                                onClick={() => { createContent() }}
+                                disabled={disablePostBtn()}
+                                className={disablePostBtn() ? uiConstants.btn.disabledBtn : uiConstants.btn.primaryBtn}>
+                                <span>Post</span>
+                            </button>
+                        </div>
                     </div>
-                    <div className="flex gap-2">
-                        <button
-                            onClick={() => { createContent() }}
-                            disabled={disablePostBtn()}
-                            className={disablePostBtn() ? uiConstants.btn.disabledBtn : uiConstants.btn.primaryBtn}>
-                            <span>Post</span>
-                        </button>
-                    </div>
-                </div>
+                }
+
             </div>
         </>
     )
