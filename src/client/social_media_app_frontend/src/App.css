@@ -1,0 +1,54 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+* {
+}
+
+body {
+    /* background-color: #F8F8F8; */
+    background-color: #171717;
+    font-family: sans-serif;
+}
+
+#formInput {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    /* border: 1px solid red; */
+}
+
+input {
+    border: 1px solid rgb(228, 227, 227);
+    border-radius: 0.25em;
+    padding: 8px !important;
+    background-color: #171717;
+}
+
+#formInput > #formLbl {
+
+    font-weight: 500;
+
+}
+
+ul {
+    list-style: none;
+    display: flex;
+    margin: 4px;
+    background-color: white;
+    align-items: center;
+}
+
+a {
+    background-color: transparent;
+}
+
+li {
+    margin: 16px;
+    background-color: white;
+}
+
+#searchBar > input {
+    outline: transparent;
+    border: transparent;
+}
