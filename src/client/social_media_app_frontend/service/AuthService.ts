@@ -13,7 +13,7 @@ export interface RegisterBody {
   lastName: string;
   email: string;
   password: string;
-  dob: string;
+  dob: any;
   phoneNumber: string;
   username: string;
 }

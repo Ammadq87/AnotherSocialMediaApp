@@ -26,37 +26,50 @@ export default function MyPosts() {
 
     return (
         <>
-            <div className="flex justify-between">
-                <div className="flex justify-between items-center">
-                    <h2 className={uiConstants.header.h2}>My Activites</h2>
-                    <FontAwesomeIcon icon={faSnowboarding} className="ml-2 text-green-500" size="lg" />
+            <section className="bg-secondary-bg py-1 px-4 rounded-md">
+                <div className="flex justify-between my-4">
+                    <div className="flex justify-between items-center">
+                        <h2 className={uiConstants.header.h2}>My Activites</h2>
+                        <FontAwesomeIcon icon={faSnowboarding} className="ml-2 text-green-500" size="lg" />
+                    </div>
+                    <button onClick={() => { setViewSection(!viewSection) }}>
+                        <FontAwesomeIcon size="lg" icon={viewSection ? faChevronCircleDown : faChevronCircleRight} />
+                    </button>
                 </div>
-                <button onClick={() => { setViewSection(!viewSection) }}>
-                    <FontAwesomeIcon size="lg" icon={viewSection ? faChevronCircleDown : faChevronCircleRight} />
-                </button>
-            </div>
-            {
-                viewSection &&
-                <div className="h-[750px] overflow-y-scroll my-2">
-                    {
-                        myPosts?.map((post, i) => {
-                            return (
-                                <Post
-                                    caption={post.caption}
-                                    createdOn={post?.createdOn}
-                                    postID={post.postID}
-                                    postedBy={username}
-                                    imageUrl={post.imageUrl}
-                                    likeCount={post.likeCount}
-                                    commentCount={post.commentCount}
-                                    shareCount={post.shareCount}
-                                    key={i}
-                                />
-                            )
-                        })
-                    }
-                </div>
-            }
+                {
+                    viewSection &&
+                    <div className="max-h-[750px] overflow-y-scroll rounded-sm">
+                        {
+                            myPosts?.map((post, i) => {
+                                return (
+                                    <Post
+                                        caption={post.caption}
+                                        createdOn={post?.createdOn}
+                                        postID={post.postID}
+                                        postedBy={username}
+                                        imageUrl={post.imageUrl}
+                                        likeCount={post.likeCount}
+                                        commentCount={post.commentCount}
+                                        shareCount={post.shareCount}
+                                        key={i}
+                                    />
+                                )
+                            })
+                        }
+
+                        {
+                            (myPosts == null || myPosts.length == 0) &&
+                            <div className="text-center py-4 text-lg items-center flex justify-center">
+                                <span className="text-3xl mr-2">😴
+                                </span>
+                                <span className="text-md font-thin">It's quiet...
+                                    Post something <a href="/feed" className="text-blue-500 underline">here</a>
+                                </span>
+                            </div>
+                        }
+                    </div>
+                }
+            </section>
         </>
     )
 }

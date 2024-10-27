@@ -1,5 +1,6 @@
 package com.ASMA.Controllers;
 
+import com.ASMA.Exceptions.AccountException;
 import com.ASMA.Models.Post;
 import com.ASMA.Models.User;
 import com.ASMA.Services.AccountService;
@@ -34,10 +35,23 @@ public class AccountController {
             }
 
         } catch (RuntimeException e) {
-            return new ResponseEntity<>("Error FR", HttpStatus.INTERNAL_SERVER_ERROR);
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
 
         return new ResponseEntity<>(profile, HttpStatus.OK);
+    }
+
+    @PutMapping(path = "/{userID}")
+    public ResponseEntity<Object> updateAccount(@PathVariable String userID, @RequestBody User user) {
+        try {
+            accountService.updateAccount(userID, user);
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        } catch (AccountException e) {
+            log.info(e.getMessage());
+          return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
+        } catch (RuntimeException e) {
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
     }
 
     @GetMapping(path = "/{userID}/posts")

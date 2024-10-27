@@ -1,15 +1,14 @@
 package com.ASMA.Services;
 
 import com.ASMA.DAO.AccountDAO;
+import com.ASMA.Exceptions.AccountException;
 import com.ASMA.Models.Post;
 import com.ASMA.Models.User;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 @Component
 public class AccountService {
@@ -35,6 +34,16 @@ public class AccountService {
         return null;
     }
 
+    public void updateAccount(String userID, User user) throws AccountException {
+        String validAccount = isAccountValid(user);
+
+        if (validAccount != null) {
+            throw new AccountException(validAccount);
+        }
+
+        accountDAO.save(user);
+    }
+
     public List<Post> getPostsByUserId(String userID) {
         List<Post> posts = new ArrayList<>();
         try {
@@ -47,5 +56,30 @@ public class AccountService {
             log.error(e.getMessage());
         }
         return posts;
+    }
+
+    private String isAccountValid(User user) {
+        if (user.getDob() == null) {
+            return "DOB not provided";
+        } else {
+            Calendar cal = Calendar.getInstance();
+            cal.add(Calendar.DATE, -18);
+            Date validAge = cal.getTime();
+
+            if (user.getDob().after(validAge)) {
+                return "User is underage";
+            }
+        }
+
+        boolean validPassword = isPasswordValid(user.getPassword());
+        if (!validPassword) {
+            return "Password not valid";
+        }
+
+        return null;
+    }
+
+    private boolean isPasswordValid(String password) {
+        return password.length() >= 8;
     }
 }

@@ -17,10 +17,10 @@ export const uiConstants = {
   div: {
     centerFeed: "w-2/5 mx-auto flex-row items-start text-white",
     contentDiv: "w-full bg-secondary-bg gap-4 p-4 rounded-md",
-    contentPost: "w-full bg-secondary-bg p-4 rounded-md my-4",
+    contentPost: "w-full bg-secondary-bg p-4 rounded-md mb-8 border",
   },
   grid: {
-    root: "grid w-full gap-4 py-2",
+    root: "grid w-full py-2",
     section: "bg-secondary-bg py-2 px-4 rounded-md font-thin",
   },
 };

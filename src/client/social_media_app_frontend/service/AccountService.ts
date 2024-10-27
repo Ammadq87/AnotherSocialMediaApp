@@ -16,8 +16,19 @@ export interface PersonalProfile {
   dob: Date | null;
 }
 
+const defaultProfile: PersonalProfile = {
+  username: "",
+  email: "",
+  password: "",
+  firstName: "",
+  lastName: null,
+  phoneNumber: null,
+  dob: null,
+};
+
 export default class AccountService extends BaseService {
-  static async getBasicProfileInformation(): Promise<PersonalProfile | null> {
+  //#region GET
+  static async getBasicProfileInformation(): Promise<PersonalProfile> {
     try {
       const userID = getAttributeFromToken("userID");
       const response = await this.DB.get(
@@ -26,7 +37,7 @@ export default class AccountService extends BaseService {
       return response.data;
     } catch (e) {
       console.error(e);
-      return null;
+      return defaultProfile;
     }
   }
 
@@ -43,4 +54,20 @@ export default class AccountService extends BaseService {
       return null;
     }
   }
+  //#endregion
+
+  //#region PUT
+  static async updateAccount(newAccount: PersonalProfile): Promise<string> {
+    try {
+      const userID = getAttributeFromToken("userID");
+      const response = await this.DB.put(
+        ACCOUNT_SERVICE_ENDPOINT + `/${userID}`,
+        newAccount
+      );
+      return response.data;
+    } catch (e) {
+      return this.getErrorMessage(e);
+    }
+  }
+  //#endregion
 }

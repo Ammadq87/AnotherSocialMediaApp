@@ -13,4 +13,12 @@ export default class BaseService {
     else if (err instanceof Error) return new AxiosError(err.message);
     return new AxiosError("An unkown error occured.");
   }
+
+  static getErrorMessage(err: any) {
+    if (axios.isAxiosError(err)) {
+      return err.response?.data?.toString() || "An error occurred";
+    } else {
+      return "Unexpected error occurred";
+    }
+  }
 }

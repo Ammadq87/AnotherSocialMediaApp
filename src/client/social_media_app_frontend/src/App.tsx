@@ -6,6 +6,7 @@ import Feed from './pages/Feed';
 import Login from './pages/Login';
 import Register from './pages/Register';
 import Account from './pages/Account';
+import { Toaster } from 'react-hot-toast';
 
 function App() {
     return (
@@ -29,6 +30,8 @@ function App() {
                             </Routes>
                         </div>
                     </div>
+                    <Toaster position="bottom-right"
+                        reverseOrder={false} />
                 </div>
             </Router>
         </>

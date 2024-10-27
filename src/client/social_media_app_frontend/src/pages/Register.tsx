@@ -9,16 +9,14 @@ export default function Register() {
     const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault()
         const formObj = new FormData(e.target as HTMLFormElement)
-
         const data: RegisterBody = {
             email: formObj.get("email") as string,
             password: formObj.get("password") as string,
             firstName: formObj.get("firstName") as string,
             lastName: formObj.get("lastName") as string,
             phoneNumber: formObj.get("phoneNumber") as string,
-            dob: formObj.get("dob") as string,
+            dob: formObj.get("dob"),
             username: formObj.get("username") as string
-
         }
 
         const response = await AuthService.Register(data)
@@ -27,7 +25,7 @@ export default function Register() {
             alert(response.response?.data)
         else {
             alert(response.data)
-            window.location.href = '/home'
+            window.location.href = '/feed'
         }
     }
 
@@ -41,7 +39,6 @@ export default function Register() {
                     </div>
                     {/* Hidden fields and inputs */}
                     <input type="hidden" name="phoneNumber" value={''} />
-                    <input type="hidden" name="dob" value={''} />
                     <div className="">
                         <div className="flex flex-row justify-between">
                             <div id="formInput" className="w-1/2 pr-2">
@@ -65,6 +62,10 @@ export default function Register() {
                     <div id="formInput">
                         <label htmlFor="password" id="formLbl">Password</label>
                         <input type="password" name="password" required />
+                    </div>
+                    <div id="formInput">
+                        <label htmlFor="dob" id="formLbl">Birth Date</label>
+                        <input type="date" name="dob" required />
                     </div>
                     <button
                         type="submit"

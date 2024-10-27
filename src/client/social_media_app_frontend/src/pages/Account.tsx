@@ -65,7 +65,7 @@ export default function Account() {
                 </div>
                 {
                     section === "my_stuff" &&
-                    <div className="my-4">
+                    <div className="my-4 grid grid-cols-1 gap-4 rounded-md">
                         <AboutMe />
                         <MyPosts />
                     </div>
