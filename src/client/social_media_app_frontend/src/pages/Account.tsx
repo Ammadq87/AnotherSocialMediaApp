@@ -46,19 +46,18 @@ export default function Account() {
                 <div>
                     <div className="flex items-center">
                         <h1 className={uiConstants.header.h1}>About Me</h1>
-                        <FontAwesomeIcon className="ml-2 text-blue-500" size="lg" icon={faCircleInfo} />
+                        {/* <FontAwesomeIcon className="ml-2 text-blue-500" size="lg" icon={faCircleInfo} /> */}
                     </div>
                     <hr />
                 </div>
-                <div className="my-4 flex justify-center items-center">
+                <div className="my-4 flex items-center">
                     {
                         links.map((link, i) => {
                             return (
                                 <button
-
                                     onClick={() => { handleSectionChange(link) }}
                                     id={`${formatField(link) + "_sectionBtn"}`}
-                                    key={i} className={`py-2 px-4 w-24 text-sm mx-2 gap-4 rounded-md ${formatField(link) === section ? 'bg-primary' : 'bg-secondary-bg'}`}
+                                    key={i} className={`py-2 px-4 w-24 text-sm mr-4  gap-4 rounded-md ${formatField(link) === section ? 'bg-primary' : 'bg-secondary-bg'}`}
                                 >{link}</button>
                             )
                         })

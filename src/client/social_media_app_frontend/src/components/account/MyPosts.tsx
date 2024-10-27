@@ -32,7 +32,7 @@ export default function MyPosts() {
                     <FontAwesomeIcon icon={faSnowboarding} className="ml-2 text-green-500" size="lg" />
                 </div>
                 <button onClick={() => { setViewSection(!viewSection) }}>
-                    <FontAwesomeIcon icon={viewSection ? faChevronCircleDown : faChevronCircleRight} />
+                    <FontAwesomeIcon size="lg" icon={viewSection ? faChevronCircleDown : faChevronCircleRight} />
                 </button>
             </div>
             {

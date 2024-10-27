@@ -1,6 +1,7 @@
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { faBell } from "@fortawesome/free-solid-svg-icons"
 import { isAuthenticated } from "../../lib/utils"
+import ProfileImage from "./ProfileImage"
 
 export default function NavBar() {
     if (!isAuthenticated()) {
@@ -13,10 +14,7 @@ export default function NavBar() {
                 <input type="text" placeholder="Search" className="h-8 bg-custom-black border-custom-gray border text-custom-light-gray" />
                 <a href="/alerts"><FontAwesomeIcon icon={faBell} className="text-white px-2" /></a>
                 <a href="/account">
-                    <img
-                        className="shadow-md w-10 h-10 rounded-full"
-                        src="https://avatarfiles.alphacoders.com/150/150277.jpg"
-                        alt="" />
+                    <ProfileImage size={"sm"} />
                 </a>
             </div>
         </>

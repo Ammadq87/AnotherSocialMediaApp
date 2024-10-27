@@ -37,7 +37,7 @@ export default function AboutMe() {
                     <FontAwesomeIcon icon={faAddressCard} className="ml-2 text-pink-500" size="lg" />
                 </div>
                 <button onClick={() => { setViewProfileSection(!viewProfileSection) }}>
-                    <FontAwesomeIcon icon={viewProfileSection ? faChevronCircleDown : faChevronCircleRight} />
+                    <FontAwesomeIcon size="lg" icon={viewProfileSection ? faChevronCircleDown : faChevronCircleRight} />
                 </button>
             </div>
 
