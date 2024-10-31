@@ -1,43 +1,39 @@
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { isAuthenticated } from "../../lib/utils"
 import { uiConstants } from "../components/UIConstants"
-import AboutMe from "../components/account/AboutMe";
-import MyPosts from "../components/account/MyPosts";
-import { faCircleInfo } from "@fortawesome/free-solid-svg-icons";
+import Following from "../components/account/Following";
+import Me from "../components/account/Me";
 import { useState } from "react";
 
-export default function Account() {
+interface AccountProp {
+    accountSection: "me" | "followers" | "following"
+}
+
+export default function Account({ accountSection = "me" }: AccountProp) {
 
     if (!isAuthenticated()) {
         window.location.href = '/auth/login'
         return
     }
 
-    const [section, setSection] = useState("my_stuff")
+    const [section, setSection] = useState(accountSection)
 
-    const links: string[] = [
-        "My Stuff", "Following", "Followers"
-    ]
-
-    function formatField(field: string) {
-        return field.toLowerCase().split(" ").join("_");
-    }
+    const links: string[] = ["me", "following", "followers"]
 
     function handleSectionChange(newSection: string) {
-        debugger
-        const currSection = formatField(section);
-
+        const currSection = section;
         const currSectionBtn = document.getElementById(currSection + "_sectionBtn")
+
         if (currSectionBtn) {
             currSectionBtn.style.backgroundColor = "";
         }
 
-        const newSectionBtn = document.getElementById(formatField(newSection) + "_sectionBtn");
+        const newSectionBtn = document.getElementById(newSection + "_sectionBtn");
+
         if (newSectionBtn) {
             newSectionBtn.style.backgroundColor = "#2a5df7";
         }
 
-        setSection(formatField(newSection))
+        setSection(newSection as "me" | "followers" | "following");
     }
 
     return (
@@ -46,7 +42,6 @@ export default function Account() {
                 <div>
                     <div className="flex items-center">
                         <h1 className={uiConstants.header.h1}>About Me</h1>
-                        {/* <FontAwesomeIcon className="ml-2 text-blue-500" size="lg" icon={faCircleInfo} /> */}
                     </div>
                     <hr />
                 </div>
@@ -56,23 +51,23 @@ export default function Account() {
                             return (
                                 <button
                                     onClick={() => { handleSectionChange(link) }}
-                                    id={`${formatField(link) + "_sectionBtn"}`}
-                                    key={i} className={`py-2 px-4 w-24 text-sm mr-4  gap-4 rounded-md ${formatField(link) === section ? 'bg-primary' : 'bg-secondary-bg'}`}
-                                >{link}</button>
+                                    id={`${link + "_sectionBtn"}`}
+                                    key={i}
+                                    className={`py-2 px-4 w-24 text-sm mr-4 font-medium gap-4 rounded-md ${link === section ? 'bg-primary' : 'bg-secondary-bg'}`}
+                                >
+                                    {link.charAt(0).toUpperCase() + link.substring(1, link.length)}
+                                </button>
                             )
                         })
                     }
                 </div>
                 {
-                    section === "my_stuff" &&
-                    <div className="my-4 grid grid-cols-1 gap-4 rounded-md">
-                        <AboutMe />
-                        <MyPosts />
-                    </div>
+                    section === "me" && <Me />
                 }
                 {
                     section === "following" &&
-                    <div className="my-4">
+                    <div className="my-4 w-full">
+                        <Following />
                     </div>
                 }
                 {
@@ -84,4 +79,3 @@ export default function Account() {
         </>
     )
 }
-

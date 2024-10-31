@@ -1,27 +1,32 @@
 package com.ASMA.Services;
 
 import com.ASMA.DAO.AccountDAO;
+import com.ASMA.DAO.FollowingDAO;
 import com.ASMA.Exceptions.AccountException;
+import com.ASMA.Models.Following;
 import com.ASMA.Models.Post;
 import com.ASMA.Models.User;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
+import java.time.LocalDate;
 import java.util.*;
 
 @Component
 public class AccountService {
     private static final Logger log = LoggerFactory.getLogger(AccountService.class);
     private final AccountDAO accountDAO;
+    private final FollowingDAO followingDAO;
 
-    public AccountService(AccountDAO accountDAO) {
+    public AccountService(AccountDAO accountDAO, FollowingDAO followingDAO) {
         this.accountDAO = accountDAO;
+        this.followingDAO = followingDAO;
     }
 
-    public User getProfile(String userID) {
+    public List<User> getProfileByIdOrUsername(String param) {
         try {
-            Optional<User> profile = accountDAO.getProfileByID(userID);
+            Optional<List<User>> profile = accountDAO.getProfileByIdOrUsername(param);
             if (profile.isPresent()) {
                 return profile.get();
             }
@@ -30,11 +35,17 @@ public class AccountService {
             throw new RuntimeException(e.getMessage());
         }
 
-        log.debug("Could not find profile with ID " + userID);
+        log.debug("Could not find profile with ID " + param);
         return null;
     }
 
     public void updateAccount(String userID, User user) throws AccountException {
+        Optional<List<User>> uniqueUser = accountDAO.findUserByEmailOrUsername(user.getEmail(), user.getUsername());
+
+        if (uniqueUser.isPresent()) {
+            throw new AccountException("Email/Username already taken");
+        }
+
         String validAccount = isAccountValid(user);
 
         if (validAccount != null) {
@@ -56,6 +67,24 @@ public class AccountService {
             log.error(e.getMessage());
         }
         return posts;
+    }
+
+    public String followUser(Following following) throws AccountException {
+        try {
+            boolean isAlreadyFollowed = accountDAO.isAlreadyFollowing(following.getUserA(), following.getUserB()) == 1;
+
+            if (isAlreadyFollowed) {
+                return "";
+            }
+
+            following.setTimestamp(LocalDate.now());
+            followingDAO.save(following);
+
+            return "";
+        } catch (RuntimeException e) {
+            log.error(e.getMessage());
+            throw new AccountException("Couldn't follow user");
+        }
     }
 
     private String isAccountValid(User user) {

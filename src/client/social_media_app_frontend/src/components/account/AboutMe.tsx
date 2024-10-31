@@ -1,14 +1,16 @@
 import { useEffect, useState } from "react"
 import { uiConstants } from "../UIConstants"
-import { PersonalProfile } from "../../../service/AccountService";
+import { User } from "../../../service/AccountService";
 import AccountService from "../../../service/AccountService";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { faChevronCircleDown, faChevronCircleRight, faAddressCard } from "@fortawesome/free-solid-svg-icons"
 import toast from 'react-hot-toast';
+import { getAttributeFromToken } from "../../../lib/utils";
 
 export default function AboutMe() {
 
-    const [profile, setProfile] = useState<PersonalProfile>({
+    const [profile, setProfile] = useState<User>({
+        userID: "",
         username: "",
         email: "",
         password: "",
@@ -18,7 +20,8 @@ export default function AboutMe() {
         dob: null,
     });
 
-    const [oldProfile, setOldProfile] = useState<PersonalProfile>({
+    const [oldProfile, setOldProfile] = useState<User>({
+        userID: "",
         username: "",
         email: "",
         password: "",
@@ -41,23 +44,26 @@ export default function AboutMe() {
         }
     }
 
-    function updateInformation(newValue: any, field: keyof PersonalProfile) {
+    function updateInformation(newValue: any, field: keyof User) {
         if (oldProfile[field] != newValue) {
             setIsProfileChanged(true)
         } else {
             setIsProfileChanged(false)
         }
 
-        const newInfo: PersonalProfile = profile;
+        const newInfo: User = profile;
         newInfo[field] = newValue;
         setProfile(newInfo);
     }
 
     useEffect(() => {
         const fetchProfile = async () => {
-            const response = await AccountService.getBasicProfileInformation();
-            setProfile(response)
-            setOldProfile(structuredClone(response))
+            const response = await AccountService.findUsers(getAttributeFromToken("userID"));
+
+            if (response && response.length > 0) {
+                setProfile(response[0])
+                setOldProfile(structuredClone(response[0]))
+            }
         }
 
         fetchProfile();
@@ -85,7 +91,7 @@ export default function AboutMe() {
 
     }
 
-    function convertAttributeNames(name: string): keyof PersonalProfile {
+    function convertAttributeNames(name: string): keyof User {
         switch (name.toLowerCase()) {
             case "username":
                 return "username";

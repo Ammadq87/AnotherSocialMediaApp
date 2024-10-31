@@ -1,5 +1,6 @@
 package com.ASMA.Filters;
 
+import com.ASMA.Controllers.Config.JwtUtil;
 import com.ASMA.Models.User;
 import jakarta.servlet.*;
 import jakarta.servlet.annotation.WebFilter;
@@ -65,8 +66,7 @@ public class AuthFilter implements Filter {
         String token = getTokenFromCookies(request.getCookies());
 
         log.info("Filter applied");
-        return true;
-        // return token != null && !JwtUtil.isTokenExpired(token) && !isSessionExpired(session);
+         return token != null && !JwtUtil.isTokenExpired(token) && !isSessionExpired(session);
     }
 
     private boolean isSessionExpired(HttpSession session) {

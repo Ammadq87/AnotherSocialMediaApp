@@ -1,6 +1,7 @@
 package com.ASMA.Controllers;
 
 import com.ASMA.Exceptions.AccountException;
+import com.ASMA.Models.Following;
 import com.ASMA.Models.Post;
 import com.ASMA.Models.User;
 import com.ASMA.Services.AccountService;
@@ -10,6 +11,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -24,21 +26,21 @@ public class AccountController {
         this.accountService = accountService;
     }
 
-    @GetMapping(path = "/{userID}")
-    public ResponseEntity<Object> getProfile(@PathVariable String userID) {
-        User profile = null;
+    @GetMapping(path = "/{param}")
+    public ResponseEntity<List<User>> getProfileByIdOrUsername(@PathVariable String param) {
+        List<User> results;
         try {
-            profile = accountService.getProfile(userID);
+            results = accountService.getProfileByIdOrUsername(param);
 
-            if (profile == null) {
-                return new ResponseEntity<>("UserID not found", HttpStatus.NOT_FOUND);
+            if (results == null) {
+                return new ResponseEntity<>(new ArrayList<>(), HttpStatus.NOT_FOUND);
             }
 
         } catch (RuntimeException e) {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
 
-        return new ResponseEntity<>(profile, HttpStatus.OK);
+        return new ResponseEntity<>(results, HttpStatus.OK);
     }
 
     @PutMapping(path = "/{userID}")
@@ -63,6 +65,18 @@ public class AccountController {
             return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
         }
         return new ResponseEntity<>(posts, HttpStatus.OK);
+    }
+
+    @PostMapping(path = "/followUser")
+    public ResponseEntity<String> followUser(@RequestBody Following following) {
+        try {
+            String response = accountService.followUser(following);
+            return new ResponseEntity<>(response, HttpStatus.OK);
+        } catch (AccountException e) {
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
+        } catch (RuntimeException e) {
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+        }
     }
 
 }

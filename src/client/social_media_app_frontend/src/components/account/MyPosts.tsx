@@ -60,9 +60,7 @@ export default function MyPosts() {
                         {
                             (myPosts == null || myPosts.length == 0) &&
                             <div className="text-center py-4 text-lg items-center flex justify-center">
-                                <span className="text-3xl mr-2">😴
-                                </span>
-                                <span className="text-md font-thin">It's quiet...
+                                <span className="text-md">It's quiet...
                                     Post something <a href="/feed" className="text-blue-500 underline">here</a>
                                 </span>
                             </div>
