@@ -40,6 +40,12 @@ public class AuthFilter implements Filter {
         response.setHeader("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS");
         response.setHeader("Access-Control-Allow-Headers", "Content-Type, Authorization, X-Requested-With");
 
+        // Allow preflight requests to pass without applying filters
+        if ("OPTIONS".equalsIgnoreCase(request.getMethod())) {
+            response.setStatus(HttpServletResponse.SC_OK);
+            return;
+        }
+
         // does not create session if already exists
         HttpSession session = request.getSession(false);
 
@@ -48,11 +54,15 @@ public class AuthFilter implements Filter {
 
         log.info("isRequestValid: {}", isRequestValid);
 
-        if (!isRequestValid) {response.sendError(401);}
+        if (!isRequestValid) {
+            response.sendError(401);
+            return;
+        }
 
         log.info("AuthFilter finished");
         filterChain.doFilter(request, response);
     }
+
 
     private boolean applyFilter(HttpServletRequest request, HttpSession session){
         log.info("Applying filter...");

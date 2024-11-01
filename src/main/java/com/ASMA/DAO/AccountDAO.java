@@ -19,6 +19,12 @@ public interface AccountDAO extends JpaRepository<User, String> {
     @Query("SELECT p FROM Post p WHERE p.postedBy = :userID")
     Optional<List<Post>> getPostsByUserId(@Param("userID") String userID);
 
+    @Query("SELECT u FROM User u WHERE u.email = :email")
+    Optional<List<User>> getUserByEmail(@Param("email") String email);
+
+    @Query("SELECT u FROM User u WHERE u.username = :username")
+    Optional<List<User>> getUserByUsername(@Param("username") String username);
+
     @Query("SELECT u FROM User u WHERE u.email = :email or u.username = :username")
     Optional<List<User>> findUserByEmailOrUsername(String email, String username);
 

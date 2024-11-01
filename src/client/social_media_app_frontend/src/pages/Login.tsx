@@ -1,7 +1,6 @@
 import { Link } from "react-router-dom";
 import { FormEvent } from "react";
 import AuthService from "../../service/AuthService"
-import { AxiosError } from "axios";
 import { LoginBody } from "../../service/AuthService";
 
 export default function Login() {
@@ -14,12 +13,7 @@ export default function Login() {
             email: formObj.get("email") as string, password: formObj.get("password") as string
         }
 
-        const response = await AuthService.Login(data)
-
-        if (response instanceof AxiosError)
-            alert(response.response?.data)
-        else
-            window.location.href = '/feed'
+        await AuthService.Login(data)
     }
 
     return (

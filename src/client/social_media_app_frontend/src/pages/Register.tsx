@@ -2,7 +2,6 @@ import { FormEvent } from "react";
 import { Link } from "react-router-dom";
 import { RegisterBody } from "../../service/AuthService";
 import AuthService from "../../service/AuthService";
-import { AxiosError } from "axios";
 
 export default function Register() {
 
@@ -19,14 +18,7 @@ export default function Register() {
             username: formObj.get("username") as string
         }
 
-        const response = await AuthService.Register(data)
-
-        if (response instanceof AxiosError)
-            alert(response.response?.data)
-        else {
-            alert(response.data)
-            window.location.href = '/feed'
-        }
+        await AuthService.Register(data)
     }
 
     return (

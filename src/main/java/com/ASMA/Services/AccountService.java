@@ -39,20 +39,37 @@ public class AccountService {
         return null;
     }
 
-    public void updateAccount(String userID, User user) throws AccountException {
-        Optional<List<User>> uniqueUser = accountDAO.findUserByEmailOrUsername(user.getEmail(), user.getUsername());
+    public void updateAccount(String userID, User updatedUser) throws AccountException {
+        Optional<List<User>> currentProfile = accountDAO.getProfileByIdOrUsername(userID);
+        User currentUser = null;
 
-        if (uniqueUser.isPresent()) {
-            throw new AccountException("Email/Username already taken");
+        if (currentProfile.isPresent()) {
+            currentUser = currentProfile.get().getFirst();
+        } else {
+            throw new AccountException("User not found");
         }
 
-        String validAccount = isAccountValid(user);
+        if (!currentUser.getUsername().equals(updatedUser.getUsername())) {
+            Optional<List<User>> usernames = accountDAO.getUserByUsername(updatedUser.getUsername());
+            if (usernames.isPresent() && !usernames.get().isEmpty()) {
+                throw new AccountException("Username already in use");
+            }
+        }
+
+        if (!currentUser.getEmail().equals(updatedUser.getEmail())) {
+            Optional<List<User>> emails = accountDAO.getUserByEmail(updatedUser.getEmail());
+            if (emails.isPresent() && !emails.get().isEmpty()) {
+                throw new AccountException("Email already in use");
+            }
+        }
+
+        String validAccount = isAccountValid(updatedUser);
 
         if (validAccount != null) {
             throw new AccountException(validAccount);
         }
 
-        accountDAO.save(user);
+        accountDAO.save(updatedUser);
     }
 
     public List<Post> getPostsByUserId(String userID) {

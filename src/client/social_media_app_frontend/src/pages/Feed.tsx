@@ -3,9 +3,10 @@ import { uiConstants } from "../components/UIConstants"
 import Create from "../components/content/Create";
 
 export default function Feed() {
-
-    if (!isAuthenticated())
+    if (!isAuthenticated()) {
         window.location.href = '/auth/login'
+        return;
+    }
 
     return (
         <>

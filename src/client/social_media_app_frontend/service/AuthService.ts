@@ -1,5 +1,7 @@
 import { AxiosError, AxiosResponse } from "axios";
 import BaseService from "./BaseService";
+import toast from "react-hot-toast";
+import { Response } from "./BaseService";
 
 const AUTH_SERVICE_ENDPOINT: string = "/auth";
 
@@ -28,29 +30,23 @@ export default class AuthService extends BaseService {
     }
   }
 
-  static async Login(data: LoginBody): Promise<AxiosResponse | AxiosError> {
+  static async Login(data: LoginBody) {
     try {
-      const response = await this.DB.post(
-        AUTH_SERVICE_ENDPOINT + "/login",
-        data
-      );
-      return response;
+      await this.DB.post(AUTH_SERVICE_ENDPOINT + "/login", data);
+      window.location.href = "/feed";
     } catch (err) {
-      return this.defaultError(err);
+      const response: Response = this.getResponse(err);
+      toast.error(response.data || "Login Error");
     }
   }
 
-  static async Register(
-    data: RegisterBody
-  ): Promise<AxiosResponse | AxiosError> {
+  static async Register(data: RegisterBody) {
     try {
-      const response = await this.DB.post(
-        AUTH_SERVICE_ENDPOINT + "/register",
-        data
-      );
-      return response;
+      await this.DB.post(AUTH_SERVICE_ENDPOINT + "/register", data);
+      window.location.href = "/feed";
     } catch (err) {
-      return this.defaultError(err);
+      const response: Response = this.getResponse(err);
+      toast.error(response.data || "Registration Error");
     }
   }
 }
