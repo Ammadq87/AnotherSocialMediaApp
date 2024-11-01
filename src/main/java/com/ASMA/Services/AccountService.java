@@ -86,18 +86,15 @@ public class AccountService {
         return posts;
     }
 
-    public String followUser(Following following) throws AccountException {
+    public void followUser(Following following) throws AccountException {
         try {
             boolean isAlreadyFollowed = accountDAO.isAlreadyFollowing(following.getUserA(), following.getUserB()) == 1;
 
-            if (isAlreadyFollowed) {
-                return "";
+            if (!isAlreadyFollowed) {
+                following.setId(UUID.randomUUID().toString());
+                following.setTimestamp(LocalDate.now());
+                followingDAO.save(following);
             }
-
-            following.setTimestamp(LocalDate.now());
-            followingDAO.save(following);
-
-            return "";
         } catch (RuntimeException e) {
             log.error(e.getMessage());
             throw new AccountException("Couldn't follow user");

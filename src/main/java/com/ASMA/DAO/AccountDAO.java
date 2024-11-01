@@ -13,7 +13,7 @@ import java.util.Optional;
 @Repository
 public interface AccountDAO extends JpaRepository<User, String> {
 
-    @Query("SELECT U FROM User U WHERE U.userID LIKE %:param% OR U.username LIKE %:param%")
+    @Query("SELECT U FROM User U WHERE U.userID LIKE :param OR U.username LIKE %:param%")
     Optional<List<User>> getProfileByIdOrUsername(@Param("param") String param);
 
     @Query("SELECT p FROM Post p WHERE p.postedBy = :userID")

@@ -4,7 +4,7 @@ import { SUCCESS, ERROR } from "./Constants";
 export const BACKEND_ENDPOINT: string = "http://localhost:8080/api/v1";
 
 export interface Response {
-  data?: string | null | undefined;
+  data?: any;
   code: number | null | undefined;
   status: string | null | undefined;
 }

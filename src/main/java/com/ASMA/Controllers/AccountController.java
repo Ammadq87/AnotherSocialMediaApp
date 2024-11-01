@@ -27,7 +27,7 @@ public class AccountController {
     }
 
     @GetMapping(path = "/{param}")
-    public ResponseEntity<List<User>> getProfileByIdOrUsername(@PathVariable String param) {
+    public ResponseEntity<List<User>> getUsersByIdOrUsername(@PathVariable String param) {
         List<User> results;
         try {
             results = accountService.getProfileByIdOrUsername(param);
@@ -70,8 +70,8 @@ public class AccountController {
     @PostMapping(path = "/followUser")
     public ResponseEntity<String> followUser(@RequestBody Following following) {
         try {
-            String response = accountService.followUser(following);
-            return new ResponseEntity<>(response, HttpStatus.OK);
+            accountService.followUser(following);
+            return new ResponseEntity<>("Following!", HttpStatus.OK);
         } catch (AccountException e) {
             return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
         } catch (RuntimeException e) {

@@ -15,7 +15,7 @@ import java.time.LocalDate;
 @AllArgsConstructor
 public class Following implements Serializable {
 
-    @Id private Long id;
+    @Id private String id;
     @JoinColumn private String userA;
     @JoinColumn private String userB;
     private LocalDate timestamp;

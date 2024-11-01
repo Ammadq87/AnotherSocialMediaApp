@@ -5,7 +5,7 @@ import AccountService, { User } from "../../service/AccountService";
 import { uiConstants } from "../components/UIConstants";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faUserPlus } from "@fortawesome/free-solid-svg-icons";
-import { isAuthenticated } from "../../lib/utils";
+import { getAttributeFromToken, getToken, isAuthenticated } from "../../lib/utils";
 
 export default function Results() {
     const { results } = useSearch();
@@ -16,8 +16,8 @@ export default function Results() {
     }
 
     async function followUser(userID: string) {
-        const response = await AccountService.addUser(userID);
-
+        const response = await AccountService.followUser(userID);
+        console.log(response);
     }
 
     function Result(data: User) {
@@ -32,14 +32,17 @@ export default function Results() {
                         </Link>
                     </div>
                     <div>
-                        <button
-                            onClick={() => { followUser(data.userID) }}
-                            className="hover:scale-110 cursor-pointer">
-                            <span>Follow</span>
-                            <FontAwesomeIcon icon={faUserPlus} size={"lg"} className="mx-2" />
-                        </button>
+                        {
+                            data.userID !== getAttributeFromToken("userID") &&
+                            <button
+                                onClick={() => { followUser(data.userID) }}
+                                className="hover:scale-110 cursor-pointer">
+                                <span>Follow</span>
+                                <FontAwesomeIcon icon={faUserPlus} size={"lg"} className="mx-2" />
+                            </button>
+                        }
                     </div>
-                </div>
+                </div >
             </>
         );
     }

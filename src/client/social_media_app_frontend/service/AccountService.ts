@@ -26,9 +26,10 @@ export default class AccountService extends BaseService {
   //#region GET
   static async findUsers(param: string): Promise<User[]> {
     try {
-      const response = await this.DB.get(
-        `${ACCOUNT_SERVICE_ENDPOINT}/${param}`
+      const response = this.getResponse(
+        await this.DB.get(`${ACCOUNT_SERVICE_ENDPOINT}/${param}`)
       );
+
       return response.data;
     } catch (e) {
       console.error(e);
@@ -67,9 +68,8 @@ export default class AccountService extends BaseService {
   //#endregion
 
   //#region POST
-  static async addUser(username: string) {
+  static async followUser(username: string) {
     try {
-      debugger;
       const payload: Following = {
         userA: getAttributeFromToken("userID"),
         userB: username,
