@@ -27,7 +27,7 @@ export default function Create() {
     ]
 
     const [caption, setCaption] = useState("");
-    const [actionCenter, setActionCenter] = useState(false)
+    const [actionCenter, setActionCenter] = useState(true)
 
     async function createContent() {
         try {
@@ -53,8 +53,8 @@ export default function Create() {
                     rows={1}
                     className={uiConstants.text.textArea}
                     onChange={(e) => { handleCaption(e.target.value) }}
-                    onFocus={() => { setActionCenter(true) }}
-                    onBlur={() => { setActionCenter(false) }}
+                    // onFocus={() => { setActionCenter(true) }}
+                    // onBlur={() => { setActionCenter(false) }}
                     placeholder="Say something to the world..."
                 >
                 </textarea>

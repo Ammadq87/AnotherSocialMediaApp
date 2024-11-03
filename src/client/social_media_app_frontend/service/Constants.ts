@@ -5,6 +5,5 @@ export const ERROR = "ERROR";
 //#endregion
 
 //#region Endpoints
-export const ACCOUNT_SERVICE_ENDPOINT = "/account";
-export const ACCOUNT_SERVICE_ENDPOINT_MY_POSTS = "/account/{}/posts";
+
 //#endregion

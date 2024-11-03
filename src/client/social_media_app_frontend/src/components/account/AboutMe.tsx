@@ -58,11 +58,11 @@ export default function AboutMe() {
 
     useEffect(() => {
         const fetchProfile = async () => {
-            const response = await AccountService.findUsers(getAttributeFromToken("userID"));
+            const response = await AccountService.getAccountById(getAttributeFromToken("userID"));
 
-            if (response && response.length > 0) {
-                setProfile(response[0])
-                setOldProfile(structuredClone(response[0]))
+            if (response !== null) {
+                setProfile(response as User)
+                setOldProfile(structuredClone(response as User))
             }
         }
 

@@ -17,8 +17,8 @@ function App() {
                 <Router>
                     <div className="flex flex-row h-screen">
                         <div className='w-full'>
-                            <NavBar />
-                            <div id='app_container' className="p-8 m-auto flex flex-row gap-8 w-full h-full">
+                            <div id='app_container' className="px-8 pb-8 m-auto flex flex-col gap-8 w-full h-full">
+                                <NavBar />
 
                                 <Routes>
                                     <Route path='/' element={<Feed />} />

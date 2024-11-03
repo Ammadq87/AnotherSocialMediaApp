@@ -1,10 +1,11 @@
+import toast from "react-hot-toast";
 import { getAttributeFromToken } from "../lib/utils";
 import BaseService from "./BaseService";
+import { SUCCESS } from "./Constants";
 import { Content } from "./ContentService";
-import {
-  ACCOUNT_SERVICE_ENDPOINT,
-  ACCOUNT_SERVICE_ENDPOINT_MY_POSTS,
-} from "./Constants";
+
+export const ACCOUNT_SERVICE_ENDPOINT = "/account";
+export const ACCOUNT_SERVICE_ENDPOINT_MY_POSTS = "/account/{}/posts";
 
 export interface User {
   userID: string;
@@ -22,12 +23,32 @@ export interface Following {
   userB: string;
 }
 
+const root: string = "/account";
+
 export default class AccountService extends BaseService {
   //#region GET
+
+  static async getAccountById(id: string): Promise<User | null> {
+    try {
+      const response = this.getResponse(await this.DB.get(`${root}/${id}`));
+
+      if (response.status === SUCCESS) {
+        return response.data;
+      } else {
+        toast.error("Account not found");
+      }
+    } catch (e) {
+      console.log(e);
+      toast.error("[E] Account not found");
+    }
+
+    return null;
+  }
+
   static async findUsers(param: string): Promise<User[]> {
     try {
       const response = this.getResponse(
-        await this.DB.get(`${ACCOUNT_SERVICE_ENDPOINT}/${param}`)
+        await this.DB.get(`/account/search/${param}`)
       );
 
       return response.data;
@@ -55,11 +76,7 @@ export default class AccountService extends BaseService {
   //#region PUT
   static async updateAccount(newAccount: User): Promise<string> {
     try {
-      const userID = getAttributeFromToken("userID");
-      const response = await this.DB.put(
-        ACCOUNT_SERVICE_ENDPOINT + `/${userID}`,
-        newAccount
-      );
+      const response = await this.DB.put(root, newAccount);
       return response.data;
     } catch (e) {
       return this.getErrorMessage(e);

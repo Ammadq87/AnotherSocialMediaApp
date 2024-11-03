@@ -19,6 +19,10 @@ export const uiConstants = {
     contentDiv: "w-full bg-secondary-bg gap-4 p-4 rounded-md",
     contentPost: "w-full bg-secondary-bg p-4 rounded-md mb-8 border",
   },
+  nav: {
+    navbar:
+      "h-20 gap-4 flex items-center border-custom-gray border-b-2 border-x-0 border-t-0 justify-end w-2/5 border mx-auto",
+  },
   grid: {
     root: "grid w-full py-2",
     section: "bg-secondary-bg py-2 px-4 rounded-md font-thin",
