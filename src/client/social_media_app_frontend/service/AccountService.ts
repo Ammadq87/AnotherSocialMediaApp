@@ -8,14 +8,14 @@ export const ACCOUNT_SERVICE_ENDPOINT = "/account";
 export const ACCOUNT_SERVICE_ENDPOINT_MY_POSTS = "/account/{}/posts";
 
 export interface User {
-  userID: string;
+  id?: string;
   username: string;
   email: string;
   password: string;
-  firstName: string;
-  lastName: string | null;
-  phoneNumber: string | null;
-  dob: Date | null;
+  name: string;
+  dateOfBirth: Date | null;
+  lastUpdatedOn?: Date;
+  createdOn?: Date;
 }
 
 export interface Following {

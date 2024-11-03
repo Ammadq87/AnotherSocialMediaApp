@@ -78,7 +78,7 @@ public class AccountService {
             }
         }
 
-        validateAccount(updatedUser);
+        validateAccount(updatedUser, currentUser);
 
         try {
             updatedUser.setPassword(HashingUtil.getHash(updatedUser.getPassword()));
@@ -118,20 +118,20 @@ public class AccountService {
         }
     }
 
-    private void validateAccount(User user) throws AccountException {
-        if (user.getDateOfBirth() == null) {
+    private void validateAccount(User newUser, User oldUser) throws AccountException {
+        if (newUser.getDateOfBirth() == null) {
             throw new AccountException("Date of Birth not provided");
         } else {
             Calendar cal = Calendar.getInstance();
             cal.add(Calendar.DATE, -16);
             Date validAge = cal.getTime();
 
-            if (user.getDateOfBirth().after(validAge)) {
+            if (newUser.getDateOfBirth().after(validAge)) {
                 throw new AccountException("User is underage");
             }
         }
 
-        if (!isPasswordValid(user.getPassword())) {
+        if (!oldUser.getPassword().equals(newUser.getPassword()) && !isPasswordValid(newUser.getPassword())) {
             throw new AccountException("Invalid password: (8+ characters, 1+ number, 1+ symbol (@$!%*#?&))");
         }
     }

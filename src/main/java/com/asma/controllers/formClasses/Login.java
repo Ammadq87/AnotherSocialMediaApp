@@ -1,6 +1,8 @@
 package com.asma.controllers.formClasses;
 
-public class Login {
+import java.io.Serializable;
+
+public class Login implements Serializable {
     private String email;
 
     public String getPassword() {

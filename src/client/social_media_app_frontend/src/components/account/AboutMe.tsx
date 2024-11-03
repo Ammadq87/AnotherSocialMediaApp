@@ -10,25 +10,21 @@ import { getAttributeFromToken } from "../../../lib/utils";
 export default function AboutMe() {
 
     const [profile, setProfile] = useState<User>({
-        userID: "",
+        id: "",
         username: "",
         email: "",
         password: "",
-        firstName: "",
-        lastName: null,
-        phoneNumber: null,
-        dob: null,
+        name: "",
+        dateOfBirth: null,
     });
 
     const [oldProfile, setOldProfile] = useState<User>({
-        userID: "",
+        id: "",
         username: "",
         email: "",
         password: "",
-        firstName: "",
-        lastName: null,
-        phoneNumber: null,
-        dob: null,
+        name: "",
+        dateOfBirth: null,
     });
 
     const [viewProfileSection, setViewProfileSection] = useState(true);
@@ -82,9 +78,10 @@ export default function AboutMe() {
                 <input
                     name={convertAttributeNames(lbl)}
                     onChange={(e) => { updateInformation(e.target.value, convertAttributeNames(lbl)) }}
-                    type={lbl === "dob" ? "date" : "text"}
+                    type={lbl === "Date of Birth" ? "date" : "text"}
                     className="w-full bg-secondary-bg p-0 mb-2 border border-gray-400"
-                    defaultValue={value}
+                    defaultValue={lbl === "Password" ? "" : value}
+                    placeholder={lbl === "Password" ? "Change password" : ""}
                 />
             </div>
         );
@@ -99,14 +96,10 @@ export default function AboutMe() {
                 return "email";
             case "password":
                 return "password";
-            case "first name":
-                return "firstName";
-            case "last name":
-                return "lastName";
-            case "phone number":
-                return "phoneNumber";
-            case "dob":
-                return "dob";
+            case "name":
+                return "name";
+            case "date of birth":
+                return "dateOfBirth";
             default:
                 throw new Error(`Invalid attribute name: ${name}`);
         }
@@ -130,15 +123,13 @@ export default function AboutMe() {
                     <form action="http://localhost:8080/api/v1/">
                         <div className={`${uiConstants.grid.root} grid-cols-2`}>
                             <div className={`${uiConstants.grid.section} border-r border-r-white rounded-none`}>
+                                {SectionInfo("Username", profile?.username)}
                                 {SectionInfo("Email", profile?.email)}
                                 {SectionInfo("Password", profile?.password)}
-                                {SectionInfo("First Name", profile?.firstName)}
-                                {SectionInfo("Last Name", profile?.lastName)}
                             </div>
                             <div className={`${uiConstants.grid.section}`}>
-                                {SectionInfo("Username", profile?.username)}
-                                {SectionInfo("Phone Number", profile?.phoneNumber)}
-                                {SectionInfo("dob", profile?.dob)}
+                                {SectionInfo("Name", profile?.name)}
+                                {SectionInfo("Date of Birth", profile?.dateOfBirth)}
                             </div>
                         </div>
                     </form>

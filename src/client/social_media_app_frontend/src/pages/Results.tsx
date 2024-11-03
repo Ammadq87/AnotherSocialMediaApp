@@ -5,7 +5,7 @@ import AccountService, { User } from "../../service/AccountService";
 import { uiConstants } from "../components/UIConstants";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faUserPlus } from "@fortawesome/free-solid-svg-icons";
-import { getAttributeFromToken, getToken, isAuthenticated } from "../../lib/utils";
+import { getAttributeFromToken, isAuthenticated } from "../../lib/utils";
 
 export default function Results() {
     const { results } = useSearch();
@@ -15,9 +15,12 @@ export default function Results() {
         return
     }
 
-    async function followUser(userID: string) {
-        const response = await AccountService.followUser(userID);
-        console.log(response);
+    async function followUser(userID: string | undefined) {
+        if (userID === undefined) {
+            return;
+        }
+
+        await AccountService.followUser(userID);
     }
 
     function Result(data: User) {
@@ -26,16 +29,16 @@ export default function Results() {
                 <div className="flex my-8 items-center justify-between">
                     <div className="flex gap-4 items-center">
                         <ProfileImage size="md" />
-                        <Link to={`/user/${data.userID}`} className="hover:text-blue-400">
+                        <Link to={`/user/${data.id}`} className="hover:text-blue-400">
                             <p className="text-xl font-bold">@{data.username}</p>
-                            <p className="text-lg text-gray-500">{data.firstName} {data.lastName}</p>
+                            <p className="text-lg text-gray-500">{data.name}</p>
                         </Link>
                     </div>
                     <div>
                         {
-                            data.userID !== getAttributeFromToken("userID") &&
+                            data.id !== getAttributeFromToken("userID") &&
                             <button
-                                onClick={() => { followUser(data.userID) }}
+                                onClick={() => { followUser(data.id) }}
                                 className="hover:scale-110 cursor-pointer">
                                 <span>Follow</span>
                                 <FontAwesomeIcon icon={faUserPlus} size={"lg"} className="mx-2" />

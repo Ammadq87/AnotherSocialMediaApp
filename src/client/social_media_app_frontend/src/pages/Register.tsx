@@ -1,20 +1,18 @@
 import { FormEvent } from "react";
 import { Link } from "react-router-dom";
-import { RegisterBody } from "../../service/AuthService";
 import AuthService from "../../service/AuthService";
+import { User } from "../../service/AccountService";
 
 export default function Register() {
 
     const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault()
         const formObj = new FormData(e.target as HTMLFormElement)
-        const data: RegisterBody = {
+        const data: User = {
             email: formObj.get("email") as string,
             password: formObj.get("password") as string,
-            firstName: formObj.get("firstName") as string,
-            lastName: formObj.get("lastName") as string,
-            phoneNumber: formObj.get("phoneNumber") as string,
-            dob: formObj.get("dob"),
+            name: formObj.get("name") as string,
+            dateOfBirth: (formObj.get("dob") as unknown) as Date,
             username: formObj.get("username") as string
         }
 

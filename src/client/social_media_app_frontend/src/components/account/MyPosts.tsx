@@ -43,10 +43,10 @@ export default function MyPosts() {
                             myPosts?.map((post, i) => {
                                 return (
                                     <Post
-                                        caption={post.caption}
+                                        title={post.title}
                                         createdOn={post?.createdOn}
-                                        postID={post.postID}
-                                        postedBy={username}
+                                        id={post.id}
+                                        userId={username}
                                         imageUrl={post.imageUrl}
                                         likeCount={post.likeCount}
                                         commentCount={post.commentCount}

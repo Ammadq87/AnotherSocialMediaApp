@@ -2,9 +2,10 @@ import { getAttributeFromToken } from "../lib/utils";
 import BaseService from "./BaseService";
 
 export interface Content {
-  postID?: string;
-  postedBy?: string;
-  caption: string;
+  id?: string;
+  userId?: string;
+  title?: string;
+  message?: string;
   createdOn: Date;
   imageUrl?: string;
   likeCount?: number;
@@ -17,9 +18,9 @@ const CONTENT_SERVICE_URL: string = "/content";
 export default class ContentService extends BaseService {
   static async createPost(caption: string) {
     const content: Content = {
-      caption: caption,
+      title: caption,
       createdOn: new Date(),
-      postedBy: getAttributeFromToken("userID"),
+      userId: getAttributeFromToken("userID"),
     };
 
     try {

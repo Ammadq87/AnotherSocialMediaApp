@@ -31,13 +31,13 @@ export default function Post(post: Content) {
                             alt=""
                         />
                         <div className='flex-col'>
-                            <span className="font-semibold flex items-center text-lg text-white"><a href={`/user/${post.postedBy}`}>@{post.postedBy}</a></span>
+                            <span className="font-semibold flex items-center text-lg text-white"><a href={`/user/${post.userId}`}>@{post.userId}</a></span>
                             <p className="font-semibold text-sm text-gray-500">{formatDate(post.createdOn)}</p>
                         </div>
                     </div>
                 </div>
                 <div className="my-2">
-                    {post.caption}
+                    {post.title}
                 </div>
                 <div className="py-2 border-t-2 border-gray-500 text-gray-500 font-semibold text-md">
                     <ul id="action_center" className='flex flex-row gap-4 items-center bg-secondary-bg'>
